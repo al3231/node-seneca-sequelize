@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start:db": "node ./db_service/main.js",
-    "start:web": "node ./web_service/main.js",
+    "start:web": "node ./web_service/main.js --seneca.print.tree",
     "start": "node ./db_service/main && node ./web_service/main",
     "auto:db": "node ./auto.js"
   },
@@ -13,11 +13,14 @@
   "license": "ISC",
   "dependencies": {
     "blueimp-md5": "^2.19.0",
+    "body-parser": "^1.19.1",
     "chalk": "4.1.0",
     "dayjs": "^1.10.7",
     "express": "^4.17.2",
     "mysql2": "^2.3.3",
     "seneca": "^3.25.0",
+    "seneca-web": "^2.2.1",
+    "seneca-web-adapter-express": "^1.2.1",
     "sequelize": "^6.12.4",
     "sequelize-auto": "^0.8.8"
   },

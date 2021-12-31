@@ -9,4 +9,4 @@ services.forEach(name => {
   seneca.use(require(`./services/${name}`));
 });
 
-seneca.listen({ type: 'tcp' });
+seneca.listen({ type: 'tcp', pin: 'role:db' });
