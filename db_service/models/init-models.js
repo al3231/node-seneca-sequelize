@@ -1,12 +1,12 @@
-var DataTypes = require("sequelize").DataTypes;
-var _category = require("./category");
-var _product = require("./product");
-var _user = require("./user");
+const DataTypes = require("sequelize").DataTypes;
+const _category = require("./category");
+const _product = require("./product");
+const _user = require("./user");
 
 function initModels(sequelize) {
-  var category = _category(sequelize, DataTypes);
-  var product = _product(sequelize, DataTypes);
-  var user = _user(sequelize, DataTypes);
+  const category = _category(sequelize, DataTypes);
+  const product = _product(sequelize, DataTypes);
+  const user = _user(sequelize, DataTypes);
 
 
   return {

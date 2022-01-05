@@ -1,6 +1,11 @@
 const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('user', {
+module.exports = (sequelize, DataTypes) => {
+  return user.init(sequelize, DataTypes);
+}
+
+class user extends Sequelize.Model {
+  static init(sequelize, DataTypes) {
+  return super.init({
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -9,17 +14,17 @@ module.exports = function(sequelize, DataTypes) {
     },
     userName: {
       type: DataTypes.STRING(50),
-      allowNull: false,
+      allowNull: true,
       field: 'user_name'
     },
     realName: {
       type: DataTypes.STRING(50),
-      allowNull: false,
+      allowNull: true,
       field: 'real_name'
     },
     password: {
       type: DataTypes.STRING(200),
-      allowNull: false
+      allowNull: true
     },
     createTime: {
       type: DataTypes.DATE,
@@ -28,7 +33,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     status: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       defaultValue: 1
     }
   }, {
@@ -46,4 +51,5 @@ module.exports = function(sequelize, DataTypes) {
       },
     ]
   });
-};
+  }
+}

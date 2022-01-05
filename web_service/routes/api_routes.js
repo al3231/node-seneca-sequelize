@@ -2,10 +2,22 @@
 const Routes = [
   {
     pin: 'role:api,module:user,method:*',
+    prefix: '/api',
+    map: {
+      login: {
+        POST: true
+      },
+      logout: {
+        POST: true
+      }
+    }
+  },
+  {
+    pin: 'role:api,module:user,method:*',
     prefix: '/api/user',
     map: {
       list: {
-        GET: true
+        POST: true
       },
       add: {
         POST: true

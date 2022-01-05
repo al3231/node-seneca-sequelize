@@ -1,4 +1,5 @@
 module.exports = {
+  // 开发环境数据库配置
   development: {
     username: 'root',
     password: '!!!abc123',
@@ -18,6 +19,7 @@ module.exports = {
     },
     timezone: '+08:00' //东八时区
   },
+  // 生产环境数据库配置
   production: {
     username: 'root',
     password: '!!!abc123',

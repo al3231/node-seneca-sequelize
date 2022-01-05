@@ -13,7 +13,8 @@ const auto = new SequelizeAuto(
     },
     caseModel: 'c',  // 生成列名的驼峰命名规则，mysql to models
     caseFile: 'c', // 生成文件名的驼峰命名规则 table name to file name
-    caseProp: 'c'
+    caseProp: 'c',
+    lang: 'es6'
   }
 )
 auto.run(function (err) {

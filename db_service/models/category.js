@@ -1,6 +1,11 @@
 const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('category', {
+module.exports = (sequelize, DataTypes) => {
+  return category.init(sequelize, DataTypes);
+}
+
+class category extends Sequelize.Model {
+  static init(sequelize, DataTypes) {
+  return super.init({
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -9,17 +14,17 @@ module.exports = function(sequelize, DataTypes) {
     },
     categoryName: {
       type: DataTypes.STRING(200),
-      allowNull: false,
+      allowNull: true,
       field: 'category_name'
     },
     createTime: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
       field: 'create_time'
     },
     status: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       defaultValue: 1
     }
   }, {
@@ -37,4 +42,5 @@ module.exports = function(sequelize, DataTypes) {
       },
     ]
   });
-};
+  }
+}

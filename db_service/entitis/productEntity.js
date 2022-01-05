@@ -6,6 +6,9 @@ const { Op } = db.Sequelize;
 const userEntity = {
   async add(params) {
     return Product.create(params);
+  },
+  async getList() {
+    return Product.findAll();
   }
 }
 
