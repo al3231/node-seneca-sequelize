@@ -1,35 +1,27 @@
 
 
 const userEntity = require('../entitis/userEntity');
+const { serviceCallback } = require('../libs/util');
 
 module.exports = function user() {
 
-  this.add({ role: 'db', model: 'user', method: 'login' }, async (msg, done) => {
-    try {
-      const rst = await userEntity.login(msg.params);
-      done(null, { data: rst });
-    } catch (err) {
-      done(err);
-    }
-  });
+  this.add({ role: 'db', model: 'user', method: 'login' },
+    serviceCallback((msg) => {
+      return userEntity.login(msg.params);
+    })
+  );
 
-  this.add({ role: 'db', model: 'user', method: 'add' }, async (msg, done) => {
-    try {
-      const rst = await userEntity.add(msg.params);
-      done(null, { data: rst });
-    } catch (err) {
-      done(err);
-    }
-  });
+  this.add({ role: 'db', model: 'user', method: 'add' },
+    serviceCallback((msg) => {
+      return userEntity.add(msg.params);
+    })
+  );
 
-  this.add({ role: 'db', model: 'user', method: 'list' }, async (msg, done) => {
-    try {
-      const rst = await userEntity.getList(msg.params);
-      done(null, { data: rst });
-    } catch (err) {
-      done(err);
-    }
-  });
+  this.add({ role: 'db', model: 'user', method: 'list' },
+    serviceCallback((msg) => {
+      return userEntity.getList(msg.params);
+    })
+  );
 
 };
 

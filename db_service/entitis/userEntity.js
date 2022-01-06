@@ -14,26 +14,32 @@ const userEntity = {
     }
   },
   async add(params) {
-    return User.create(params);
+    const { userName } = params;
+    const user = await User.findOne({ where: { userName: userName } });
+    if (user) {
+      throw new Error('用户名存在');
+    } else {
+      return User.create(params);
+    }
+
   },
   async getList(params) {
     const { pageSize = 10, currentPage = 1, keyword } = params;
     const where = {};
     if (keyword) {
       where[Op.or] = {
-        userName: { [Op.like]: `%${keyword}%` },
-        realName: { [Op.like]: `%${keyword}%` }
+        userName: { [Op.substring]: keyword },
+        realName: { [Op.substring]: keyword }
       };
     }
     return User.findAndCountAll({
-      attributes: [
-        'id',
-        'userName',
-        'realName',
-        'status',
-        'createTime'
-      ],
+      attributes: {
+        exclude: ['password']
+      },
       where,
+      order: [
+        ['createTime', 'DESC']
+      ],
       limit: Number(pageSize),
       offset: Number((currentPage - 1) * pageSize)
     })

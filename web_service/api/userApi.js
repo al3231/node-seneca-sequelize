@@ -17,7 +17,7 @@ module.exports = function userApi(seneca) {
         noCaptch = true;
       }
       if (!noCaptch && captchaText && verifyCode.toLowerCase() !== captchaText.toLowerCase()) {
-        done(null, handleError('验证码不正确', msg, codes.LOGIN_ERROR));
+        done(handleError('验证码不正确', msg, codes.LOGIN_ERROR));
         return;
       }
       const params = {
@@ -27,11 +27,11 @@ module.exports = function userApi(seneca) {
       this.client({ type: 'tcp', pin: 'role:db' }).act('role:db,model:user,method:login', { params }, (err, rst) => {
         if (err) {
           console.log(err);
-          done(null, handleError(err));
+          done(handleError(err));
           return;
         }
         if (!err && rst.data === null) {
-          done(null, handleError('用户名密码不正确', msg, codes.LOGIN_ERROR));
+          done(handleError('用户名密码不正确', msg, codes.LOGIN_ERROR));
           return;
         }
         const {
@@ -66,7 +66,7 @@ module.exports = function userApi(seneca) {
       }
       this.client({ type: 'tcp', pin: 'role:db' }).act('role:db,model:user,method:list', { params }, (err, rst) => {
         const json = apiCallBack(err, rst, msg);
-        done(null, json);
+        done(json);
       });
     }
 
@@ -82,7 +82,7 @@ module.exports = function userApi(seneca) {
         createTime: dayjs().format('YYYY-MM-DD HH:mm:ss')
       };
       this.client({ type: 'tcp', pin: 'role:db' }).act('role:db,model:user,method:add', { params }, (err, rst) => {
-        done(null, apiCallBack(err, rst, msg));
+        done(apiCallBack(err, rst, msg));
       });
     }
   })

@@ -3,6 +3,7 @@
 
 const Express = require('express');
 const session = require('express-session');
+// redis相关引用（使用redis时开启）
 // const redis = require("redis");
 // const redisStore = require('connect-redis')(session);
 const SenecaWeb = require('seneca-web');
@@ -28,7 +29,7 @@ const app = Express();
 // 
 app.use(require('body-parser').json());
 
-// redis连接客户端
+// redis连接客户端（使用redis时开启）
 // const redisConf = config.redis;
 // const redisClient = redis.createClient(redisConf.port, redisConf.host);
 // 注册session 
@@ -64,6 +65,7 @@ seneca
     var server = seneca.export('web/context')();
     // 端口来自配置文件
     const port = config.port;
+    // express监听
     server.listen(port, (err) => {
       if (err) {
         console.error(err);

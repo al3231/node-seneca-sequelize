@@ -7,7 +7,9 @@
     "start:db": "node ./db_service/main.js",
     "start:web": "node ./web_service/main.js --seneca.print.tree",
     "start": "node ./db_service/main && node ./web_service/main",
-    "auto:db": "node ./auto.js"
+    "auto:db": "node ./auto.js",
+    "pm2:db": "pm2 start ./db_service/main.js -i max --watch --name db",
+    "pm2:web": "pm2 start ./web_service/main.js -i max --watch --name web"
   },
   "author": "al3231",
   "license": "ISC",

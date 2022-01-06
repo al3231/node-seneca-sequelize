@@ -1,14 +1,18 @@
 const debugConf = require('../config/debug');
 const env = process.env.NODE_ENV || 'development';
-const userApi = require('./userApi');
-const productApi = require('./productApi');
-const categoryApi = require('./categoryApi');
+const fs = require('fs');
+const path = require('path');
+const basename = path.basename(__filename);
+
 const { validataToken } = require('../libs/api');
 
 module.exports = function api() {
-  userApi(this);
-  productApi(this);
-  categoryApi(this);
+  const files = fs.readdirSync(__dirname);
+  files.forEach(apiFile => {
+    if (apiFile !== basename) {
+      require(`./${apiFile}`)(this);
+    }
+  });
 
   // 拦截api
   this.wrap(['role:api'], function (msg, done) {

@@ -1,6 +1,7 @@
 module.exports = {
   development: {
-    port: '8088',
+    port: '8088', // 运行端口
+    // redis配置
     redis: {
       host: 'localhost',
       port: '6379'

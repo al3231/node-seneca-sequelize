@@ -4,7 +4,7 @@ log4js.configure({
   appenders: {
     dateFileOut: {
       type: 'dateFile',
-      filename: 'logs/web-service-log',
+      filename: 'logs/db-service-log',
       alwaysIncludePattern: true,
       pattern: '.yyyy-MM-dd.log'
     }
