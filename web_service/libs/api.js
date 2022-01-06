@@ -22,7 +22,7 @@ const errors = {
 
 
 function validataToken(msg, done) {
-  const { module, method, request$: req } = msg;
+  const { request$: req } = msg;
   let valid = true;
   if (req.headers.token === undefined) {
     valid = false;
@@ -38,10 +38,10 @@ function validataToken(msg, done) {
 }
 
 function makeLogInfo(msg, respone) {
-  const { module, method, request$: req } = msg;
+  const { model, method, request$: req } = msg;
   const headerToken = req.headers?.token;
   const sessiontoken = req.session?.token;
-  return { ['header-token']: headerToken || 'undefined', ['session-token']: sessiontoken || 'undefined', module, method, respone };
+  return { ['header-token']: headerToken || 'undefined', ['session-token']: sessiontoken || 'undefined', model, method, respone };
 }
 
 
@@ -51,6 +51,7 @@ function handleSuccess(data, msg) {
   log.info(JSON.stringify(logInfo));
   return rst;
 }
+
 function handleError(message = '服务错误', msg, code = codes.INNER_ERROR) {
   const rst = { code, message };
   const logInfo = makeLogInfo(msg, rst);

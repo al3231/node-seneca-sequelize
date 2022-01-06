@@ -1,7 +1,7 @@
 
 const Routes = [
   {
-    pin: 'role:api,module:user,method:*',
+    pin: 'role:api,model:user,method:*',
     prefix: '/api',
     map: {
       login: {
@@ -13,7 +13,7 @@ const Routes = [
     }
   },
   {
-    pin: 'role:api,module:user,method:*',
+    pin: 'role:api,model:user,method:*',
     prefix: '/api/user',
     map: {
       list: {

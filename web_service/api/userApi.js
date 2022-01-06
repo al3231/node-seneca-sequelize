@@ -6,7 +6,7 @@ const debugConf = require('../config/debug');
 
 
 module.exports = function userApi(seneca) {
-  seneca.add('role:api,module:user,method:login', function (msg, done) {
+  seneca.add('role:api,model:user,method:login', function (msg, done) {
     if (validateParameters(msg.args.query, ['loginName', 'password', 'verifyCode'], done)) {
       const { loginName, password, verifyCode } = msg.args.query;
       const req = msg.request$;
@@ -24,7 +24,7 @@ module.exports = function userApi(seneca) {
         loginName,
         password: md5(`${loginName}${password}`)
       }
-      this.client({ type: 'tcp', pin: 'role:db' }).act('role:db,table:user,cmd:login', { params }, (err, rst) => {
+      this.client({ type: 'tcp', pin: 'role:db' }).act('role:db,model:user,method:login', { params }, (err, rst) => {
         if (err) {
           console.log(err);
           done(null, handleError(err));
@@ -56,7 +56,7 @@ module.exports = function userApi(seneca) {
   })
 
 
-  seneca.add('role:api,module:user,method:list', function (msg, done) {
+  seneca.add('role:api,model:user,method:list', function (msg, done) {
     if (validateParameters(msg.args.query, ['pageSize', 'currentPage'], done)) {
       const { pageSize, currentPage, keyword } = msg.args.query;
       const params = {
@@ -64,7 +64,7 @@ module.exports = function userApi(seneca) {
         currentPage,
         keyword
       }
-      this.client({ type: 'tcp', pin: 'role:db' }).act('role:db,table:user,cmd:list', { params }, (err, rst) => {
+      this.client({ type: 'tcp', pin: 'role:db' }).act('role:db,model:user,method:list', { params }, (err, rst) => {
         const json = apiCallBack(err, rst, msg);
         done(null, json);
       });
@@ -72,7 +72,7 @@ module.exports = function userApi(seneca) {
 
   })
 
-  seneca.add('role:api,module:user,method:add', function (msg, done) {
+  seneca.add('role:api,model:user,method:add', function (msg, done) {
     if (validateParameters(msg.args.query, ['userName', 'realName', 'password'], done)) {
       const { userName, realName, password } = msg.args.query;
       const params = {
@@ -81,7 +81,7 @@ module.exports = function userApi(seneca) {
         password: md5(`${userName}${password}`),
         createTime: dayjs().format('YYYY-MM-DD HH:mm:ss')
       };
-      this.client({ type: 'tcp', pin: 'role:db' }).act('role:db,table:user,cmd:add', { params }, (err, rst) => {
+      this.client({ type: 'tcp', pin: 'role:db' }).act('role:db,model:user,method:add', { params }, (err, rst) => {
         done(null, apiCallBack(err, rst, msg));
       });
     }

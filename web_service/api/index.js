@@ -1,10 +1,15 @@
 const debugConf = require('../config/debug');
 const env = process.env.NODE_ENV || 'development';
-const userApi = require('./userApi')
+const userApi = require('./userApi');
+const productApi = require('./productApi');
+const categoryApi = require('./categoryApi');
 const { validataToken } = require('../libs/api');
 
 module.exports = function api() {
   userApi(this);
+  productApi(this);
+  categoryApi(this);
+
   // 拦截api
   this.wrap(['role:api'], function (msg, done) {
     // 调用API且非登录验证头部sessionID
@@ -21,9 +26,6 @@ module.exports = function api() {
           return;
         }
       }
-      // console.log('wrap', msg.role);
-    } else {
-      // console.log('wrap', msg.role, msg);
     }
     this.prior(msg, done);
   })

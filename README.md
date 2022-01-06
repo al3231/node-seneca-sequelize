@@ -29,15 +29,15 @@ $ yarn start:web # 启动web_service
 $ npm install pm2 -g 
 ```
 
-# db_service 目录及配置介绍
+## db_service 目录及配置介绍
 
-## 配置
+### 配置
 
 - __db.js :__ 提供数据连接的相关配置。 分为development和production两项配置。可根据环境变量env决定采用哪套配置。
 
 
 
-## 目录
+### 目录
 - __config:__ 数据库配置
 - __entitis:__ Sequelize 初始化， 各个数据实体的数据操作方法
 - __models:__ 数据实体，由代码自动生成，生成命令如下：
@@ -49,21 +49,31 @@ $ npm install pm2 -g
 - __services:__ 提供微服务路由，对外输出API
 - __main.js:__ 为主文件
 
-# web_service 目录及配置介绍
-## 配置
+## web_service 目录及配置介绍
+### 配置
 - __debug.js :__ 提供调试配置。可关闭验证码验证或Token验证等
 - __index.js :__ 提供系统development和production两个环境的对应配置，包括端口，redis等配置
 
-## 目录
+### 目录
 - __config:__ 配置文件
 - __api:__ 与数据微服务的对接, 并撰写成内部微服务与路由对接
 - __libs:__ 公共基础方法 api: 数据统一处理，错误处理。log: log4js日志配置初始化。
 - __routes:__ 提供对外API路由配置。express_routes.js 为直接使用express.router配置的路由。 seneca_routes为使用seneca-web插件的路由配置表。
 - __main.js:__ web_service主文件
 
+## 关注事项
+
+- db_service的对外微服务pattern为： role:db,model:实体名，method:操作动作。
+
+- web_service的内部微服务pattern为： role:api,model:实体名，method:操作动作。内部微服务主要与seneca-web配合，自动生成express路由。详情可看seneca的文档。
+
+- models的生成脚本在根目录下的auto.js.
+
+- 日志生成会生成到运行主目录下的logs文件夹内。按日期生成。
 
 
-#学习地址
+
+## 学习地址
 
 Seneca官方网站 [https://senecajs.org/](https://senecajs.org/)
 

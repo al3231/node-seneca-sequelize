@@ -16,7 +16,7 @@ const seneca = require('seneca')(
 );
 const senecaRoutes = require('./routes/seneca_routes');
 const expressRoute = require('./routes/express_routes');
-const apiPlugin = require('./api/apiPlugin');
+const apiPlugin = require('./api');
 const env = process.env.NODE_ENV || 'development';
 const config = require('./config')[env];
 const log = require('./libs/log');
