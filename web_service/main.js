@@ -14,9 +14,9 @@ const seneca = require('seneca')(
     }
   }
 );
-const apiRoutes = require('./routes/api_routes');
-const otherRoute = require('./routes/other_routes');
-const apiPlugin = require('./apiPlugin');
+const senecaRoutes = require('./routes/seneca_routes');
+const expressRoute = require('./routes/express_routes');
+const apiPlugin = require('./api/apiPlugin');
 const env = process.env.NODE_ENV || 'development';
 const config = require('./config')[env];
 const log = require('./libs/log');
@@ -45,13 +45,13 @@ app.use(session({
 }));
 
 // 注册其他路由（非seneca配置路由）
-app.use(otherRoute);
+app.use(expressRoute);
 
 // Seneca初始化，添加api服务，web插件, 路由
 seneca
   .use(apiPlugin)
   .use(SenecaWeb, {
-    routes: apiRoutes,
+    routes: senecaRoutes,
     adapter: require('seneca-web-adapter-express'),
     context: app,
     options: { parseBody: false }

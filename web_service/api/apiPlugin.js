@@ -1,7 +1,7 @@
-const debugConf = require('./config/debug');
+const debugConf = require('../config/debug');
 const env = process.env.NODE_ENV || 'development';
-const userApi = require('./api/userApi')
-const { validataToken } = require('./libs/api');
+const userApi = require('./userApi')
+const { validataToken } = require('../libs/api');
 
 module.exports = function api() {
   userApi(this);
