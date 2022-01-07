@@ -6,11 +6,14 @@ const { Op } = db.Sequelize;
 const userEntity = {
   async login(params) {
     const { loginName, password } = params;
+    if (!loginName || !password) {
+      throw new Error('请输入用户名密码');
+    }
     const user = await User.findOne({ where: { userName: loginName } });
     if (user.userName === loginName && user.password === password) {
       return user;
     } else {
-      return null;
+      throw new Error('用户名密码不正确');
     }
   },
   async add(params) {
@@ -21,9 +24,32 @@ const userEntity = {
     } else {
       return User.create(params);
     }
-
   },
-  async getList(params) {
+  async delete(params) {
+    const { id } = params;
+    if (!id) {
+      throw new Error('参数错误');
+    }
+    const count = User.destroy({
+      where: {
+        id: id
+      }
+    })
+    return count;
+  },
+  async update(params) {
+    const { id, loginName, ...update } = params;
+    if (!id) {
+      throw new Error('参数错误');
+    }
+    const [count] = await User.update(update, {
+      where: {
+        id: id
+      }
+    })
+    return count;
+  },
+  getList(params) {
     const { pageSize = 10, currentPage = 1, keyword } = params;
     const where = {};
     if (keyword) {

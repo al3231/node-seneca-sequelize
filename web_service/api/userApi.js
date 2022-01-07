@@ -1,9 +1,8 @@
-const dayjs = require("dayjs");
-const { validateParameters, apiCallBack, handleError, handleSuccess, codes } = require('../libs/api');
+
+const { validateParameters, invokeDbClient, handleError, codes } = require('./utils');
 const md5 = require('blueimp-md5');
 const env = process.env.NODE_ENV || 'development';
 const debugConf = require('../config/debug');
-
 
 module.exports = function userApi(seneca) {
   seneca.add('role:api,model:user,method:login', function (msg, done) {
@@ -24,21 +23,13 @@ module.exports = function userApi(seneca) {
         loginName,
         password: md5(`${loginName}${password}`)
       }
-      this.client({ type: 'tcp', pin: 'role:db' }).act('role:db,model:user,method:login', { params }, (err, rst) => {
-        if (err) {
-          console.log(err);
-          done(handleError(err));
-          return;
-        }
-        if (!err && rst.data === null) {
-          done(handleError('用户名密码不正确', msg, codes.LOGIN_ERROR));
-          return;
-        }
+
+      invokeDbClient(this, msg, done, params, (_data) => {
         const {
           id,
           userName,
           realName,
-        } = rst.data;
+        } = _data;
         // 这里要获取用户Token
         const token = req.sessionID;
         req.session.token = token;
@@ -48,13 +39,11 @@ module.exports = function userApi(seneca) {
           realName,
           token
         };
-        done(null, handleSuccess(data, msg));
-
+        return data;
       });
-    }
+    };
 
   })
-
 
   seneca.add('role:api,model:user,method:list', function (msg, done) {
     if (validateParameters(msg.args.query, ['pageSize', 'currentPage'], done)) {
@@ -64,26 +53,42 @@ module.exports = function userApi(seneca) {
         currentPage,
         keyword
       }
-      this.client({ type: 'tcp', pin: 'role:db' }).act('role:db,model:user,method:list', { params }, (err, rst) => {
-        const json = apiCallBack(err, rst, msg);
-        done(json);
-      });
+      invokeDbClient(this, msg, done, params);
     }
 
   })
 
   seneca.add('role:api,model:user,method:add', function (msg, done) {
-    if (validateParameters(msg.args.query, ['userName', 'realName', 'password'], done)) {
+    if (validateParameters(msg.args.query, ['userName', 'realName'], done)) {
       const { userName, realName, password } = msg.args.query;
       const params = {
         userName,
         realName,
-        password: md5(`${userName}${password}`),
-        createTime: dayjs().format('YYYY-MM-DD HH:mm:ss')
+        password: md5(`${userName}${password}`)
       };
-      this.client({ type: 'tcp', pin: 'role:db' }).act('role:db,model:user,method:add', { params }, (err, rst) => {
-        done(apiCallBack(err, rst, msg));
-      });
+      invokeDbClient(this, msg, done, params);
+    }
+  })
+
+  seneca.add('role:api,model:user,method:update', function (msg, done) {
+    if (validateParameters(msg.args.query, ['id'], done)) {
+      const { id, realName, status } = msg.args.query;
+      const params = {
+        id,
+        realName,
+        status
+      };
+      invokeDbClient(this, msg, done, params);
+    }
+  })
+
+  seneca.add('role:api,model:user,method:delete', function (msg, done) {
+    if (validateParameters(msg.args.query, ['id'], done)) {
+      const { id } = msg.args.query;
+      const params = {
+        id
+      };
+      invokeDbClient(this, msg, done, params);
     }
   })
 

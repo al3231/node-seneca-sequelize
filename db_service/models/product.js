@@ -54,11 +54,20 @@ class product extends Sequelize.Model {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1
+    },
+    deleteTime: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      field: 'delete_time'
     }
   }, {
     sequelize,
     tableName: 'product',
-    timestamps: false,
+    timestamps: true,
+    paranoid: true,
+    createdAt: 'createTime',
+    updatedAt: 'updateTime',
+    deletedAt: 'deleteTime',
     indexes: [
       {
         name: "PRIMARY",

@@ -6,6 +6,7 @@ function serviceCallback(func) {
       const rst = await func(msg);
       done({ data: rst });
     } catch (err) {
+      console.log(err);
       log.error(err);
       done(err);
     }

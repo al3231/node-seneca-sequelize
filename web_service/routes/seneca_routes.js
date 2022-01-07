@@ -21,6 +21,38 @@ const Routes = [
       },
       add: {
         POST: true
+      },
+      update: {
+        PUT: true,
+        name: ''
+      },
+      delete: {
+        DELETE: true,
+        name: ''
+      }
+    }
+  },
+  {
+    pin: 'role:api,model:product,method:*',
+    prefix: '/api/product',
+    map: {
+      list: {
+        POST: true
+      },
+      add: {
+        POST: true
+      }
+    }
+  },
+  {
+    pin: 'role:api,model:category,method:*',
+    prefix: '/api/category',
+    map: {
+      list: {
+        POST: true
+      },
+      add: {
+        POST: true
       }
     }
   }

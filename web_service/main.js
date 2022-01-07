@@ -9,7 +9,7 @@ const session = require('express-session');
 const SenecaWeb = require('seneca-web');
 const seneca = require('seneca')(
   {
-    // log: 'silent',
+    log: 'silent',
     debug: {
       undead: true
     }
@@ -57,6 +57,7 @@ seneca
     context: app,
     options: { parseBody: false }
   })
+  .client(config.dbServer)
   .ready((err) => {
     if (err) {
       console.error(err);

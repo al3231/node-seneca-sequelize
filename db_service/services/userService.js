@@ -17,6 +17,18 @@ module.exports = function user() {
     })
   );
 
+  this.add({ role: 'db', model: 'user', method: 'update' },
+    serviceCallback((msg) => {
+      return userEntity.update(msg.params);
+    })
+  );
+
+  this.add({ role: 'db', model: 'user', method: 'delete' },
+    serviceCallback((msg) => {
+      return userEntity.delete(msg.params);
+    })
+  );
+
   this.add({ role: 'db', model: 'user', method: 'list' },
     serviceCallback((msg) => {
       return userEntity.getList(msg.params);

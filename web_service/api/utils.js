@@ -1,4 +1,7 @@
-const log = require('./log');
+const log = require('../libs/log');
+const env = process.env.NODE_ENV || 'development';
+const dbServerConf = require('../config/index')[env].dbServer;
+
 // 接口返回码枚举
 const codes = {
   SUCCESS: '000000',
@@ -120,17 +123,24 @@ function validateParameters(query, keys, done) {
 /**
  *
  * api回调统一处理方法
- * @param {*} err 远端seneca返回的错误
- * @param {*} rst 远端seneca返回的结果
+ * @param {*} seneca seneca实体
  * @param {*} msg 本地seneca的消息体
+ * @param {*} done  本地seneca的回调方法
+ * @param {*} params  远程seneca通信参数
+ * @param {*} onSuccess  成功后数据处理
  * @return {*} 
  */
-function apiCallBack(err, rst, msg) {
-  if (err) {
-    return handleError(err, msg, codes.INNER_ERROR);
-  }
-  const { data } = rst;
-  return handleSuccess(data, msg);
+async function invokeDbClient(seneca, msg, done, params, onSuccess) {
+  seneca.act(`role:db,model:${msg.model},method:${msg.method}`, { params }, (err, rst) => {
+    if (err) {
+      done(handleError(err, msg, codes.INNER_ERROR))
+    }
+    let data = rst.data;
+    if (onSuccess) {
+      data = onSuccess(data);
+    }
+    done(handleSuccess(data, msg));
+  });
 }
 
 module.exports = {
@@ -140,6 +150,6 @@ module.exports = {
   handleSuccess,
   handleError,
   validateParameters,
-  apiCallBack
+  invokeDbClient
 
 }

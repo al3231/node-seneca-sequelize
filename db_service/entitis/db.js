@@ -1,8 +1,9 @@
 const Sequelize = require('sequelize');
 const env = process.env.NODE_ENV || 'development';
-const config = require('../config/db.js')[env];
+const config = require('../config/index.js')[env].db;
 const chalk = require('chalk');
 const initModels = require('../models/init-models');
+const generateRelation = require('./relation');
 
 const { database, username, password, ...options } = config;
 
@@ -17,8 +18,10 @@ sequelize
   .catch(err => {
     console.error(chalk.red('***************Connection Mysql Failed.**************', err));
   });
-
+// 初始化模型
 const models = initModels(sequelize);
+// 建立模型关系
+generateRelation(models);
 
 const db = { ...models };
 

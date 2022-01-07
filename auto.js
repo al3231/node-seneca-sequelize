@@ -9,7 +9,12 @@ const auto = new SequelizeAuto(
     directory: './db_service/models',  // prevents the program from writing to disk
     port: '3306',           // 数据库运行端口
     additional: {
-      timestamps: false,
+      // timestamps: false,
+      timestamps: true,
+      paranoid: true,
+      createdAt: 'createTime',
+      updatedAt: 'updateTime',
+      deletedAt: 'deleteTime'
     },
     caseModel: 'c',  // 生成列名的驼峰命名规则，mysql to models
     caseFile: 'c', // 生成文件名的驼峰命名规则 table name to file name
